@@ -1,0 +1,11 @@
+# 학습 산출물 (재생성 가능 — 커밋하지 않음)
+ct_quality_gate_out/
+*.npy
+*.pt
+predictions.csv
+
+# 파이썬
+__pycache__/
+*.pyc
+.venv/
+.ipynb_checkpoints/
