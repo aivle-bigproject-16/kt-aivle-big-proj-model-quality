@@ -1,0 +1,59 @@
+{
+  "model_details": {
+    "model_name": "MobileNetV3-Small-Inspection-Model",
+    "architecture": "MobileNetV3Small",
+    "framework": "TensorFlow/Keras",
+    "input_shape": [320, 320, 3],
+    "training_strategy": {
+      "method": "Transfer Learning",
+      "fine_tuning": "Top 25 layers unfreezed",
+      "optimizer": "Adam",
+      "learning_rate": 1e-05,
+      "loss": "sparse_categorical_crossentropy",
+      "epochs": 10
+    }
+  },
+  "intended_use": {
+    "primary_task": "Binary Classification (Image Defect Detection)",
+    "application": "Manufacturing quality inspection",
+    "classes": {
+      "0": "fail",
+      "1": "pass"
+    }
+  },
+  "training_data": {
+    "description": "Original pass images and augmented fail images paired at a 1:1 ratio.",
+    "total_training_files": 15200,
+    "total_validation_files": 3800,
+    "class_weights": {
+      "fail (0)": 2.0,
+      "pass (1)": 1.0
+    }
+  },
+  "evaluation_data": {
+    "total_test_files": 1000,
+    "ratio": "pass 9 : fail 1",
+    "description": "Test dataset completely separated from the training set to prevent data leakage."
+  },
+  "metrics": {
+    "default_threshold": {
+      "accuracy": 1.00,
+      "precision_fail": 0.98,
+      "recall_fail": 0.98,
+      "f1_score_fail": 0.98
+    },
+    "custom_threshold_0.3": {
+      "accuracy": 0.99,
+      "precision_fail": 0.94,
+      "recall_fail": 0.99,
+      "f1_score_fail": 0.97
+    }
+  },
+  "limitations_and_warnings": {
+    "limitations": "Model was evaluated primarily on synthetically augmented data. Real-world validation is highly recommended before full production deployment.",
+    "known_false_negatives": [
+      "RGB_cell_cylindrical_1900100123_2000020709.jpg",
+      "RGB_cell_cylindrical_1900100455_2000020686.jpg"
+    ]
+  }
+}
