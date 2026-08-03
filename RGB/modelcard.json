@@ -1,0 +1,44 @@
+{
+  "schema_version": "1.0",
+  "task": "quality-classifier",
+  "identity": {
+    "weight_file": "inspection_model_test_3.keras",
+    "weight_sha256": null,
+    "train_run": null,
+    "source_commit": null,
+    "trained_at": "2026-08-03"
+  },
+  "runtime": {
+    "python": "3.13.9",
+    "torch": null,
+    "ultralytics": null,
+    "sahi": null,
+    "tensorflow": "2.21.0",
+    "keras": "3.14.0"
+  },
+  "input": {
+    "input_size": [
+      320,
+      320
+    ],
+    "normalize": "letterbox (resize_with_pad)",
+    "color_space": "RGB"
+  },
+  "inference": {
+    "threshold": 0.3,
+    "output_type": "softmax",
+    "class_order": [
+      "fail",
+      "pass"
+    ]
+  },
+  "output": {
+    "fail_label": "fail",
+    "threshold_rationale": "재현율(Recall) 최적화를 위한 커스텀 임계값 적용"
+  },
+  "modality": "RGB 전용",
+  "fixtures": {
+    "path": null,
+    "count": null
+  }
+}
