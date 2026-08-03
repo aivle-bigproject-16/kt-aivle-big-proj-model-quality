@@ -4,7 +4,7 @@
   "modality": "RGB 전용",
   "identity": {
     "model_name": "MobileNetV3-Small-Inspection-Model",
-    "weight_file": "rgb_model_v3.keras",
+    "weight_file": "rgb_quality_model_v3.keras",
     "trained_at": "2026-08-03"
   },
   "runtime": {
