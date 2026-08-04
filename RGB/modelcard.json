@@ -2,11 +2,11 @@
   "schema_version": "1.0",
   "task": "quality-classifier",
   "identity": {
-    "weight_file": "rgb_quality_model_v3.keras",
+    "weight_file": "rgb_quality_model_v4.keras",
     "weight_sha256": null,
     "train_run": null,
     "source_commit": null,
-    "trained_at": "2026-08-03"
+    "trained_at": "2026-08-04"
   },
   "runtime": {
     "python": "3.13.9",
