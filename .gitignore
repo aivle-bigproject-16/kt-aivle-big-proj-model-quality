@@ -9,6 +9,12 @@ ct_quality_gate_out/
 cache/
 runs/
 
+# 배포용 묶음 (가중치 + 모델카드 + ZIP). Drive 로 전달하고 저장소에는 담지 않는다.
+dist/
+
+# 실행 결과 노트북 (검토 후 원본 이름으로 덮어쓰는 임시 파일)
+*.executed.ipynb
+
 *.npy
 *.pt
 *.keras
