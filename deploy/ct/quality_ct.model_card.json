@@ -1,0 +1,119 @@
+{
+  "schema_version": "1.0",
+  "task": "quality-classifier",
+  "modality": "CT 전용. RGB 는 별도 담당·별도 가중치 (통합 여부 미정 — 노션 §4.2 회신 대기)",
+  "identity": {
+    "weight_file": "quality_ct.pt",
+    "weight_sha256": "f42ae7194be1275e04cf9d869d038501e25bd1f8afcd9c8dfd2820a5f5285904",
+    "train_run": "CT_MobileNetV3_Small.ipynb / DATASET=v2.0 / fold0 / 12ep(best=7)",
+    "source_commit": "5919d56da435215908ec015bae9a441ccc99e05a",
+    "trained_at": "2026-08-03",
+    "source_repo": "aivle-bigproject-16/kt-aivle-big-proj-model-quality",
+    "source_branch": "feat/ct",
+    "source_file": "CT_MobileNetV3_Small.ipynb"
+  },
+  "runtime": {
+    "python": "3.14",
+    "torch": "2.13.0+cpu",
+    "torchvision": "0.28.0+cpu",
+    "ultralytics": null,
+    "sahi": null,
+    "note": "CPU 전용 휠. GPU 환경에서도 동일 버전이면 결과 재현됨"
+  },
+  "input": {
+    "input_size": [
+      288,
+      512
+    ],
+    "input_size_note": "★ [W, H] 비정사각. 224x224 정사각이 아니다. 정사각으로 넣으면 에러 없이 결과만 틀린다",
+    "color_space": "grayscale(L) 로 읽은 뒤 3채널 복제",
+    "letterbox": true,
+    "letterbox_pad_value": 114,
+    "normalize": {
+      "type": "imagenet",
+      "mean": [
+        0.485,
+        0.456,
+        0.406
+      ],
+      "std": [
+        0.229,
+        0.224,
+        0.225
+      ]
+    },
+    "resize_interpolation": "bilinear",
+    "allow_upscale": false,
+    "roi": "원본 데이터셋이 이미 ROI crop + 장변 512 resize 된 상태다. 추가 crop 금지",
+    "pipeline": [
+      "1. L 로 읽기",
+      "2. 종횡비 보존 축소 (확대 안 함)",
+      "3. 288x512 캔버스 중앙 배치, 여백 114",
+      "4. 3채널 복제",
+      "5. /255 후 ImageNet 정규화"
+    ]
+  },
+  "inference": {
+    "output_type": "logit",
+    "output_type_note": "sigmoid 확률이 아니다. threshold 는 logit 에 적용한다",
+    "class_order": "단일 출력(1-logit). 값이 클수록 촬영 불량. 클래스 순서 개념 없음",
+    "threshold": 1.65218985080719,
+    "threshold_source": "val(fold1) 에서 clean FPR 1% 목표로 선택",
+    "half": false,
+    "device": "cpu"
+  },
+  "output": {
+    "fail_label": "FAIL",
+    "pass_label": "PASS",
+    "rule": "logit >= 1.652190 이면 FAIL",
+    "threshold_rationale": "★ 이 값을 그대로 쓰지 말 것. val 에서 FPR 1% 를 목표로 골랐으나 처음 보는 셀(test)에 적용하면 실측 FPR 이 4.47% 로 4.5배 벗어난다. 독립 셀이 47개뿐이라 fold 간 PASS 점수 분포가 이동하기 때문이다. 배포 대상 데이터로 shadow 모드 측정 후 재보정 필수."
+  },
+  "performance": {
+    "eval_set": "test = fold0 (학습에 쓰지 않은 셀 7개)",
+    "n": 3114,
+    "n_fail": 318,
+    "pr_auc": 0.9874136996296254,
+    "recall_at_clean_fpr": {
+      "1%": 0.9654088050314465,
+      "3%": 0.9905660377358491,
+      "5%": 0.9937106918238994
+    },
+    "per_case_recall_at_fpr3": {
+      "ct_acquisition_motion": 0.9672131147540983,
+      "ct_beam_hardening_metal_streak": 0.9850746268656716,
+      "ct_cell_alignment_failure": 1.0,
+      "ct_insufficient_projection_sampling": 1.0,
+      "ct_low_signal_noise": 1.0
+    },
+    "threshold_transfer": {
+      "note": "val 운영점을 test 에 적용했을 때의 실측치",
+      "fpr1%": {
+        "target": 0.01,
+        "actual": 0.0447,
+        "recall": 0.9937
+      },
+      "fpr3%": {
+        "target": 0.03,
+        "actual": 0.0926,
+        "recall": 0.9937
+      },
+      "fpr5%": {
+        "target": 0.05,
+        "actual": 0.1162,
+        "recall": 0.9937
+      }
+    }
+  },
+  "fixtures": {
+    "path": "s3://kt-aivle-big-proj-kks/models/fixtures/quality_ct/",
+    "count": 24
+  },
+  "caveats": [
+    "★ threshold 가 fold 간 전이되지 않는다. 배포 데이터로 재보정 필수 (output.threshold_rationale 참조)",
+    "FAIL 2000장은 전량 합성이며 실촬영 실패 사진으로 검증한 적이 없다",
+    "결함 강도가 모델 검출 문턱보다 훨씬 심한 포화 구간이라 실제보다 쉬운 문제일 수 있다",
+    "clean FPR 은 증강하지 않은 PASS 기준이다. 실환경에서는 더 높다",
+    "fold0 단일 모델이며 5-fold 앙상블이 아니다",
+    "lockbox 9셀은 아직 개봉하지 않았다"
+  ]
+}

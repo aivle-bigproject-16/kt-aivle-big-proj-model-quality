@@ -1,0 +1,255 @@
+{
+  "schema_version": "1.0",
+  "model": {
+    "weight_file": "quality_ct.pt",
+    "weight_sha256": "f42ae7194be1275e04cf9d869d038501e25bd1f8afcd9c8dfd2820a5f5285904",
+    "threshold": 1.65218985080719
+  },
+  "note": "expected.logit 은 원본 jpg 에서 전처리를 거쳐 계산한 값이다. 허용 오차 |Δlogit| <= 1e-3. 이보다 크면 전처리가 다르다.",
+  "tolerance": {
+    "logit_abs": 0.001
+  },
+  "count": 24,
+  "cases": [
+    {
+      "file": "images/CT_cell_pouch_1900000011_z_2000009458.jpg",
+      "ground_truth": "fail",
+      "failure_case": "ct_acquisition_motion",
+      "expected": {
+        "logit": -4.309536,
+        "fail_prob": 0.013262,
+        "label": "PASS"
+      }
+    },
+    {
+      "file": "images/CT_cell_pouch_1900000027_y_2000007889.jpg",
+      "ground_truth": "fail",
+      "failure_case": "ct_beam_hardening_metal_streak",
+      "expected": {
+        "logit": 2.015907,
+        "fail_prob": 0.882457,
+        "label": "FAIL"
+      }
+    },
+    {
+      "file": "images/CT_cell_pouch_1900000011_z_2000002571.jpg",
+      "ground_truth": "fail",
+      "failure_case": "ct_cell_alignment_failure",
+      "expected": {
+        "logit": 6.594397,
+        "fail_prob": 0.998634,
+        "label": "FAIL"
+      }
+    },
+    {
+      "file": "images/CT_cell_pouch_1900000040_x_2000006340.jpg",
+      "ground_truth": "fail",
+      "failure_case": "ct_insufficient_projection_sampling",
+      "expected": {
+        "logit": 7.470372,
+        "fail_prob": 0.999431,
+        "label": "FAIL"
+      }
+    },
+    {
+      "file": "images/CT_cell_pouch_1900000027_z_2000002353.jpg",
+      "ground_truth": "fail",
+      "failure_case": "ct_low_signal_noise",
+      "expected": {
+        "logit": 9.727132,
+        "fail_prob": 0.99994,
+        "label": "FAIL"
+      }
+    },
+    {
+      "file": "images/CT_cell_pouch_1900000011_z_2000014462.jpg",
+      "ground_truth": "fail",
+      "failure_case": "ct_acquisition_motion",
+      "expected": {
+        "logit": -1.108905,
+        "fail_prob": 0.248075,
+        "label": "PASS"
+      }
+    },
+    {
+      "file": "images/CT_cell_pouch_1900000043_x_2000008905.jpg",
+      "ground_truth": "fail",
+      "failure_case": "ct_beam_hardening_metal_streak",
+      "expected": {
+        "logit": 2.699512,
+        "fail_prob": 0.936998,
+        "label": "FAIL"
+      }
+    },
+    {
+      "file": "images/CT_cell_pouch_1900000043_z_2000002791.jpg",
+      "ground_truth": "fail",
+      "failure_case": "ct_cell_alignment_failure",
+      "expected": {
+        "logit": 7.862848,
+        "fail_prob": 0.999615,
+        "label": "FAIL"
+      }
+    },
+    {
+      "file": "images/CT_cell_pouch_1900000043_x_2000002069.jpg",
+      "ground_truth": "fail",
+      "failure_case": "ct_insufficient_projection_sampling",
+      "expected": {
+        "logit": 7.766098,
+        "fail_prob": 0.999576,
+        "label": "FAIL"
+      }
+    },
+    {
+      "file": "images/CT_cell_pouch_1900000027_z_2000011218.jpg",
+      "ground_truth": "fail",
+      "failure_case": "ct_low_signal_noise",
+      "expected": {
+        "logit": 9.821532,
+        "fail_prob": 0.999946,
+        "label": "FAIL"
+      }
+    },
+    {
+      "file": "images/CT_cell_pouch_1900000043_z_2000000922.jpg",
+      "ground_truth": "fail",
+      "failure_case": "ct_acquisition_motion",
+      "expected": {
+        "logit": 4.732826,
+        "fail_prob": 0.991275,
+        "label": "FAIL"
+      }
+    },
+    {
+      "file": "images/CT_cell_pouch_1900000011_z_2000017018.jpg",
+      "ground_truth": "fail",
+      "failure_case": "ct_beam_hardening_metal_streak",
+      "expected": {
+        "logit": 2.717612,
+        "fail_prob": 0.938058,
+        "label": "FAIL"
+      }
+    },
+    {
+      "file": "images/CT_cell_pouch_1900000043_y_2000001675.jpg",
+      "ground_truth": "pass",
+      "failure_case": null,
+      "expected": {
+        "logit": 9.18432,
+        "fail_prob": 0.999897,
+        "label": "FAIL"
+      }
+    },
+    {
+      "file": "images/CT_cell_pouch_1900000043_y_2000002659.jpg",
+      "ground_truth": "pass",
+      "failure_case": null,
+      "expected": {
+        "logit": 9.054745,
+        "fail_prob": 0.999883,
+        "label": "FAIL"
+      }
+    },
+    {
+      "file": "images/CT_cell_pouch_1900000043_y_2000003204.jpg",
+      "ground_truth": "pass",
+      "failure_case": null,
+      "expected": {
+        "logit": 8.712802,
+        "fail_prob": 0.999836,
+        "label": "FAIL"
+      }
+    },
+    {
+      "file": "images/CT_cell_pouch_1900000043_y_2000016096.jpg",
+      "ground_truth": "pass",
+      "failure_case": null,
+      "expected": {
+        "logit": 8.649092,
+        "fail_prob": 0.999825,
+        "label": "FAIL"
+      }
+    },
+    {
+      "file": "images/CT_cell_pouch_1900000043_y_2000000721.jpg",
+      "ground_truth": "pass",
+      "failure_case": null,
+      "expected": {
+        "logit": 7.146297,
+        "fail_prob": 0.999213,
+        "label": "FAIL"
+      }
+    },
+    {
+      "file": "images/CT_cell_pouch_1900000043_y_2000004391.jpg",
+      "ground_truth": "pass",
+      "failure_case": null,
+      "expected": {
+        "logit": 6.773104,
+        "fail_prob": 0.998857,
+        "label": "FAIL"
+      }
+    },
+    {
+      "file": "images/CT_cell_pouch_1900000025_y_2000012680.jpg",
+      "ground_truth": "pass",
+      "failure_case": null,
+      "expected": {
+        "logit": -4.543402,
+        "fail_prob": 0.010525,
+        "label": "PASS"
+      }
+    },
+    {
+      "file": "images/CT_cell_pouch_1900000011_x_2000011551.jpg",
+      "ground_truth": "pass",
+      "failure_case": null,
+      "expected": {
+        "logit": -4.544717,
+        "fail_prob": 0.010512,
+        "label": "PASS"
+      }
+    },
+    {
+      "file": "images/CT_cell_pouch_1900000025_y_2000013867.jpg",
+      "ground_truth": "pass",
+      "failure_case": null,
+      "expected": {
+        "logit": -4.545589,
+        "fail_prob": 0.010502,
+        "label": "PASS"
+      }
+    },
+    {
+      "file": "images/CT_cell_pouch_1900000035_y_2000001842.jpg",
+      "ground_truth": "pass",
+      "failure_case": null,
+      "expected": {
+        "logit": -4.54758,
+        "fail_prob": 0.010482,
+        "label": "PASS"
+      }
+    },
+    {
+      "file": "images/CT_cell_pouch_1900000011_z_2000009888.jpg",
+      "ground_truth": "pass",
+      "failure_case": null,
+      "expected": {
+        "logit": -4.547632,
+        "fail_prob": 0.010481,
+        "label": "PASS"
+      }
+    },
+    {
+      "file": "images/CT_cell_pouch_1900000025_y_2000019898.jpg",
+      "ground_truth": "pass",
+      "failure_case": null,
+      "expected": {
+        "logit": -4.547966,
+        "fail_prob": 0.010478,
+        "label": "PASS"
+      }
+    }
+  ]
+}
