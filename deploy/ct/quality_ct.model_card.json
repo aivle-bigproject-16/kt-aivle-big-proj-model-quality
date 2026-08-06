@@ -4,13 +4,31 @@
   "modality": "CT 전용. RGB 는 별도 담당·별도 가중치 (통합 여부 미정 — 노션 §4.2 회신 대기)",
   "identity": {
     "weight_file": "quality_ct.pt",
-    "weight_sha256": "f42ae7194be1275e04cf9d869d038501e25bd1f8afcd9c8dfd2820a5f5285904",
-    "train_run": "CT_MobileNetV3_Small.ipynb / DATASET=v2.0 / fold0 / 12ep(best=7)",
-    "source_commit": "5919d56da435215908ec015bae9a441ccc99e05a",
-    "trained_at": "2026-08-03",
+    "weight_sha256": "206000f320381615a2cf4d04e7c4ce535fa920a2da26a931f33e8afe306f26c8",
+    "train_run": "CT_MobileNetV3_Small.ipynb / DATASET=v1.8+v2.0 / fold0 / 12ep(best=12)",
+    "source_commit": "f063f93d6022c3ba378490bcfd3b718ed0546476",
+    "trained_at": "2026-08-05",
     "source_repo": "aivle-bigproject-16/kt-aivle-big-proj-model-quality",
     "source_branch": "feat/ct",
-    "source_file": "CT_MobileNetV3_Small.ipynb"
+    "source_file": "CT_MobileNetV3_Small.ipynb",
+    "supersedes": {
+      "weight_sha256": "f42ae7194be1275e04cf9d869d038501e25bd1f8afcd9c8dfd2820a5f5285904",
+      "reason": "v2.0 단독 학습본. v1.8 의 심한 금속 streak 를 47.1% 만 검출했다"
+    }
+  },
+  "training_data": {
+    "datasets": [
+      "quality_fail_40k_v1.8_20260730_CT",
+      "quality_fail_v2_output_20260802_CT"
+    ],
+    "rationale": "두 데이터셋의 증강 강도 범위가 겹치지 않아 각각 반대 방향의 구멍이 있었다. v2.0 단독 모델은 v1.8 의 심한 streak(streak 24~70개, attenuation 0.21~0.70)를 47% 만 잡고, v1.8 단독 모델은 v2.0 의 약한 streak(streak 8~12개, attenuation 0.05~0.10)를 0% 잡는다.",
+    "n_images": 23443,
+    "n_fail": 4000,
+    "dedup": "PASS 는 두 데이터셋이 원본을 공유하므로 파일 해시로 16,557장 중복 제거",
+    "split_unit": "원본 battery_id (증강 이력 group_key 로 역산). 데이터셋마다 battery_id 를 독립 발급하므로 발급 ID 로 묶으면 같은 물리 셀이 학습·평가로 갈라진다",
+    "n_cells": 47,
+    "lockbox_cells": 9,
+    "stem_collision": "★ 두 데이터셋이 파일 이름 19,985개를 공유한다. 같은 이름, 다른 그림이다. 이미지를 stem 만으로 식별하지 말 것 (fixture 는 v18_/v20_ 접두어를 붙였다)"
   },
   "runtime": {
     "python": "3.14",
@@ -57,7 +75,7 @@
     "output_type": "logit",
     "output_type_note": "sigmoid 확률이 아니다. threshold 는 logit 에 적용한다",
     "class_order": "단일 출력(1-logit). 값이 클수록 촬영 불량. 클래스 순서 개념 없음",
-    "threshold": 1.65218985080719,
+    "threshold": -0.6227158308029175,
     "threshold_source": "val(fold1) 에서 clean FPR 1% 목표로 선택",
     "half": false,
     "device": "cpu"
@@ -65,55 +83,109 @@
   "output": {
     "fail_label": "FAIL",
     "pass_label": "PASS",
-    "rule": "logit >= 1.652190 이면 FAIL",
-    "threshold_rationale": "★ 이 값을 그대로 쓰지 말 것. val 에서 FPR 1% 를 목표로 골랐으나 처음 보는 셀(test)에 적용하면 실측 FPR 이 4.47% 로 4.5배 벗어난다. 독립 셀이 47개뿐이라 fold 간 PASS 점수 분포가 이동하기 때문이다. 배포 대상 데이터로 shadow 모드 측정 후 재보정 필수."
+    "rule": "logit >= -0.622716 이면 FAIL",
+    "threshold_rationale": "★ 이 값을 그대로 쓰지 말 것. val 에서 FPR 1% 를 목표로 골랐으나 처음 보는 셀(test)의 실측 FPR 은 2.80% 로 2.8배 벗어난다. 독립 셀이 47개뿐이라 fold 간 PASS 점수 분포가 이동하기 때문이다. 직전 v2.0 단독본(4.5배)보다는 개선됐으나 여전히 배포 대상 데이터로 shadow 모드 측정 후 재보정이 필수다."
   },
   "performance": {
-    "eval_set": "test = fold0 (학습에 쓰지 않은 셀 7개)",
-    "n": 3114,
-    "n_fail": 318,
-    "pr_auc": 0.9874136996296254,
+    "eval_set": "test = fold0 (학습에 쓰지 않은 원본 셀 7개)",
+    "n": 3607,
+    "n_fail": 640,
+    "pr_auc": 0.9922620091967023,
     "recall_at_clean_fpr": {
-      "1%": 0.9654088050314465,
-      "3%": 0.9905660377358491,
-      "5%": 0.9937106918238994
+      "1%": 0.9796875,
+      "3%": 0.98125,
+      "5%": 0.9859375
     },
     "per_case_recall_at_fpr3": {
-      "ct_acquisition_motion": 0.9672131147540983,
-      "ct_beam_hardening_metal_streak": 0.9850746268656716,
+      "ct_acquisition_motion": 1.0,
+      "ct_beam_hardening_metal_streak": 0.92,
       "ct_cell_alignment_failure": 1.0,
       "ct_insufficient_projection_sampling": 1.0,
       "ct_low_signal_noise": 1.0
+    },
+    "per_case_recall_at_fpr3_by_dataset": {
+      "ct_acquisition_motion": {
+        "v1.8": 1.0,
+        "v2.0": 1.0
+      },
+      "ct_beam_hardening_metal_streak": {
+        "v1.8": 1.0,
+        "v2.0": 0.84
+      },
+      "ct_cell_alignment_failure": {
+        "v1.8": 1.0,
+        "v2.0": 1.0
+      },
+      "ct_insufficient_projection_sampling": {
+        "v1.8": 1.0,
+        "v2.0": 1.0
+      },
+      "ct_low_signal_noise": {
+        "v1.8": 1.0,
+        "v2.0": 1.0
+      }
+    },
+    "by_dataset": {
+      "v1.8": {
+        "n": 3069,
+        "n_fail": 322,
+        "recall_at_fpr3": 1.0
+      },
+      "v2.0": {
+        "n": 538,
+        "n_fail": 318,
+        "recall_at_fpr3": 0.9623
+      }
     },
     "threshold_transfer": {
       "note": "val 운영점을 test 에 적용했을 때의 실측치",
       "fpr1%": {
         "target": 0.01,
-        "actual": 0.0447,
-        "recall": 0.9937
+        "threshold": -0.622716,
+        "actual": 0.028,
+        "recall": 0.9812
       },
       "fpr3%": {
         "target": 0.03,
-        "actual": 0.0926,
-        "recall": 0.9937
+        "threshold": -1.553892,
+        "actual": 0.0448,
+        "recall": 0.9828
       },
       "fpr5%": {
         "target": 0.05,
-        "actual": 0.1162,
-        "recall": 0.9937
+        "threshold": -2.05199,
+        "actual": 0.0694,
+        "recall": 0.9875
+      }
+    },
+    "vs_previous": {
+      "note": "같은 test 이미지 3607장에 두 가중치를 돌려 비교. 단독 v2.0 은 이 셀 7개 중 6개를 학습해 유리한 조건이었다",
+      "recall_at_fpr3": {
+        "merged": 0.981,
+        "v2.0_only": 0.961
+      },
+      "beam_hardening_v1.8": {
+        "merged": 1.0,
+        "v2.0_only": 0.76
+      },
+      "beam_hardening_v2.0": {
+        "merged": 0.84,
+        "v2.0_only": 0.947
       }
     }
   },
   "fixtures": {
-    "path": "s3://kt-aivle-big-proj-kks/models/fixtures/quality_ct/",
-    "count": 24
+    "path": "deploy/ct/fixtures/ (S3 업로드 시 s3://kt-aivle-big-proj-kks/models/fixtures/quality_ct/)",
+    "count": 24,
+    "note": "test 셀에서만 뽑았다. FAIL 은 각 케이스의 가장 어려운 것, PASS 절반은 판정선 근처"
   },
   "caveats": [
     "★ threshold 가 fold 간 전이되지 않는다. 배포 데이터로 재보정 필수 (output.threshold_rationale 참조)",
-    "FAIL 2000장은 전량 합성이며 실촬영 실패 사진으로 검증한 적이 없다",
-    "결함 강도가 모델 검출 문턱보다 훨씬 심한 포화 구간이라 실제보다 쉬운 문제일 수 있다",
+    "★ v2.0 의 약한 beam_hardening 검출이 0.947 -> 0.840 으로 떨어졌다. 놓친 것과 잡은 것의 강도가 사실상 같아(attenuation 0.0735 vs 0.0742) 검출 바닥 부근의 무작위 실패로 보인다",
+    "FAIL 4000장은 전량 합성이며 실촬영 실패 사진으로 검증한 적이 없다",
     "clean FPR 은 증강하지 않은 PASS 기준이다. 실환경에서는 더 높다",
     "fold0 단일 모델이며 5-fold 앙상블이 아니다",
-    "lockbox 9셀은 아직 개봉하지 않았다"
+    "lockbox 9셀은 아직 개봉하지 않았다",
+    "12 epoch 상한에서 조기 종료가 걸리지 않았다. 더 학습하면 오를 여지가 있다"
   ]
 }
