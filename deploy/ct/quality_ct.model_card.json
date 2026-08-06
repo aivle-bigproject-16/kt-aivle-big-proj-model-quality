@@ -30,6 +30,41 @@
     "lockbox_cells": 9,
     "stem_collision": "★ 두 데이터셋이 파일 이름 19,985개를 공유한다. 같은 이름, 다른 그림이다. 이미지를 stem 만으로 식별하지 말 것 (fixture 는 v18_/v20_ 접두어를 붙였다)"
   },
+  "serialization": {
+    "format": "PyTorch state_dict (torch.save 의 zip 아카이브 형식)",
+    "saved_by": "torch.save(model.state_dict(), path)  — CT_MobileNetV3_Small.ipynb 셀 ct-18",
+    "saved_with": "torch 2.13.0+cpu / Python 3.14 / Windows",
+    "file_size_bytes": 6195177,
+    "contents": "OrderedDict 하나뿐이다. 텐서 244개(파라미터 1,531,027개), float32. BatchNorm 의 num_batches_tracked 34개만 int64",
+    "not_included": "옵티마이저 상태·epoch·모델 클래스·threshold 는 들어 있지 않다. threshold 는 이 모델카드의 inference.threshold 를 쓸 것",
+    "not_this": "★ TorchScript(.pt 이지만 torch.jit) 도 ONNX 도 전체 모델 pickle 도 아니다. torch.load 만 하면 dict 가 나오지 모델이 나오지 않는다. 반드시 아키텍처를 먼저 만들고 load_state_dict 해야 한다",
+    "weights_only_safe": true,
+    "weights_only_note": "torch.load(..., weights_only=True) 로 열린다. 임의 코드 실행 위험이 없으므로 이 옵션을 쓰는 것을 권한다",
+    "byte_order": "little",
+    "map_location": "cpu 텐서로 저장돼 있다. GPU 에서 쓰려면 로드 후 .to('cuda')",
+    "architecture": {
+      "backbone": "torchvision.models.mobilenet_v3_small",
+      "pretrained_at_train_time": "MobileNet_V3_Small_Weights.IMAGENET1K_V1 에서 출발했으나, 저장된 것은 학습이 끝난 가중치다. 로드할 때는 weights=None 으로 뼈대만 만들 것",
+      "head": "classifier[3] 을 Linear(1024, 1) 로 교체. 원본의 Linear(1024, 1000) 이 아니다",
+      "head_shapes": {
+        "classifier.3.weight": [1, 1024],
+        "classifier.3.bias": [1]
+      },
+      "output_shape": "[B, 1]",
+      "strict_load": "strict=True 로 전부 일치한다. 키가 남거나 모자라면 아키텍처를 잘못 만든 것이다"
+    },
+    "load_example": [
+      "import torch, torch.nn as nn, torchvision as tv",
+      "sd = torch.load('quality_ct.pt', map_location='cpu', weights_only=True)",
+      "m = tv.models.mobilenet_v3_small(weights=None)",
+      "m.classifier[3] = nn.Linear(m.classifier[3].in_features, 1)",
+      "m.load_state_dict(sd, strict=True)",
+      "m.eval()",
+      "# 전처리는 input 절을 따를 것. 출력은 [B,1] logit 이며 sigmoid 가 적용돼 있지 않다"
+    ],
+    "verified_with": "deploy/ct/verify_fixtures.py — 가중치 sha256 대조 후 fixture 24장의 logit 을 재계산해 전처리·로드 절차가 학습과 같은지 확인한다 (현재 24/24 통과)",
+    "compat_note": "torch 2.13.0+cpu 에서 저장·검증했다. zip 아카이브 형식이라 최신 torch 계열에서 열리지만, 구버전에서의 동작은 확인하지 않았다. 문제가 생기면 알려주시면 TorchScript 나 ONNX 로도 내보내겠다"
+  },
   "runtime": {
     "python": "3.14",
     "torch": "2.13.0+cpu",
