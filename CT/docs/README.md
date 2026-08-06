@@ -30,4 +30,4 @@
 | 배포 전 필수 | **shadow 모드**로 실환경 clean FPR 측정 후 threshold 재보정 |
 | lockbox 9셀 | **미개봉** |
 
-배포 규격은 [`deploy/ct/quality_ct.model_card.json`](../../deploy/ct/quality_ct.model_card.json) 참조.
+배포 규격은 [`CT/deploy/quality_ct.model_card.json`](../deploy/quality_ct.model_card.json) 참조.

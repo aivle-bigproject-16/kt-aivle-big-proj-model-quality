@@ -9,7 +9,7 @@ SHA-256 `206000f320381615a2cf4d04e7c4ce535fa920a2da26a931f33e8afe306f26c8`
 가장 빠른 확인:
 
 ```
-cd deploy/ct
+cd CT/deploy
 python verify_fixtures.py
 ```
 
