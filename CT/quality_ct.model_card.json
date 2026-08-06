@@ -4,7 +4,7 @@
   "modality": "CT 전용. RGB 는 별도 담당·별도 가중치 (통합 여부 미정 — 노션 §4.2 회신 대기)",
   "identity": {
     "weight_file": "quality_ct.pt",
-    "weight_path_in_repo": "CT/deploy/quality_ct.pt",
+    "weight_path_in_repo": "CT/quality_ct.pt",
     "weight_path_note": "가중치·모델카드·fixture 가 한 폴더에 있다. 저장소에서 받아 그대로 쓰면 된다",
     "weight_sha256": "206000f320381615a2cf4d04e7c4ce535fa920a2da26a931f33e8afe306f26c8",
     "train_run": "CT_MobileNetV3_Small.ipynb / DATASET=v1.8+v2.0 / fold0 / 12ep(best=12)",
@@ -64,7 +64,7 @@
       "m.eval()",
       "# 전처리는 input 절을 따를 것. 출력은 [B,1] logit 이며 sigmoid 가 적용돼 있지 않다"
     ],
-    "verified_with": "CT/deploy/verify_fixtures.py — 가중치 sha256 대조 후 fixture 24장의 logit 을 재계산해 전처리·로드 절차가 학습과 같은지 확인한다 (현재 24/24 통과)",
+    "verified_with": "CT/verify_fixtures.py — 가중치 sha256 대조 후 fixture 24장의 logit 을 재계산해 전처리·로드 절차가 학습과 같은지 확인한다 (현재 24/24 통과)",
     "compat_note": "torch 2.13.0+cpu 에서 저장·검증했다. zip 아카이브 형식이라 최신 torch 계열에서 열리지만, 구버전에서의 동작은 확인하지 않았다. 문제가 생기면 알려주시면 TorchScript 나 ONNX 로도 내보내겠다"
   },
   "runtime": {
@@ -212,7 +212,7 @@
     }
   },
   "fixtures": {
-    "path": "CT/deploy/fixtures/",
+    "path": "CT/fixtures/",
     "s3_path": "s3://kt-aivle-big-proj-kks/models/fixtures/quality_ct/",
     "s3_path_note": "아직 업로드하지 않았다. 자격증명 확보 후 올린다",
     "count": 24,
