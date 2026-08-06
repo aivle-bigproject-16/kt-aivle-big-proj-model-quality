@@ -20,6 +20,11 @@ CT/dist/
 # 실행 결과 노트북 (검토 후 원본 이름으로 덮어쓰는 임시 파일)
 CT/*.executed.ipynb
 
+# 작업 기록(계획서·실행안내·보고서). 배포에 필요하지 않아 로컬에만 둔다.
+# 과거 커밋에는 남아 있으므로 필요하면 아래로 꺼낼 수 있다.
+#   git show 34d768d:CT/docs/PLAN.md > PLAN.md
+CT/docs/
+
 CT/**/*.npy
 CT/**/*.pt
 CT/**/predictions.csv

@@ -2,9 +2,21 @@
 
 딥러닝을 활용하여 촬영된 이미지의 품질(정상/불량)을 판별하는 이진 분류기(Binary Classifier) 프로젝트입니다.
 
+## 🗂️ 저장소 구성
+
+모달리티별로 폴더를 나눕니다. 각 폴더에 학습 노트북 · 가중치 · 모델카드가 함께 들어 있습니다.
+
+| 폴더 | 담당 | 프레임워크 | 배포 규격 |
+|---|---|---|---|
+| `RGB/` | RGB 촬영 품질 | TensorFlow / Keras | `rgb_modelcard.json` |
+| `CT/` | CT 촬영 품질 | PyTorch | `quality_ct.model_card.json` |
+
+`CT/` 는 `ai-infer` 검증용 골든 fixture(`CT/fixtures/`)와 검증 스크립트(`CT/verify_fixtures.py`)를 함께 제공합니다.
+가중치를 받은 쪽에서 `cd CT && python verify_fixtures.py` 를 돌리면 전처리가 학습과 같은지 자동으로 확인됩니다.
+
 ## 📂 파일 구성 및 쓰임새 (File Description)
 
-### 1. `MobileNetV3 Small.ipynb`[cite: 1]
+### 1. `RGB/rgb_quality_model_train_code.ipynb`[cite: 1]
 * **핵심 AI 모델 학습 및 성능 평가 (Model Training & Evaluation)**[cite: 1]
 * 실제 이미지 품질을 판별하는 딥러닝 이진 분류 모델을 구축하고 학습시키는 핵심 노트북 파일입니다[cite: 1].
 * 경량화 모델인 `MobileNetV3 Small`을 불러와 프로젝트에 맞게 전이 학습(Fine-tuning)을 진행합니다[cite: 1].
