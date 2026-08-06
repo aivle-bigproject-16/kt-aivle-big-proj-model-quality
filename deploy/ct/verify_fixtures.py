@@ -2,7 +2,8 @@
 """골든 fixture 검증 — 이 스크립트가 통과하면 전처리가 학습과 동일하다.
 
 사용법:
-    python verify_fixtures.py <가중치.pt>
+    python verify_fixtures.py              # 옆에 있는 quality_ct.pt 를 검사한다
+    python verify_fixtures.py <가중치.pt>   # 다른 파일을 검사할 때
 
 가중치는 model_card.json 의 identity.weight_sha256 과 대조한다.
 필요한 것은 torch, torchvision, pillow, numpy 뿐이다.
@@ -92,7 +93,11 @@ def main(weight: Path) -> int:
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 2:
+    if len(sys.argv) > 2:
         print(__doc__)
         sys.exit(2)
-    sys.exit(main(Path(sys.argv[1])))
+    w = Path(sys.argv[1]) if len(sys.argv) == 2 else HERE / "quality_ct.pt"
+    if not w.exists():
+        print(f"가중치를 찾을 수 없다: {w}")
+        sys.exit(2)
+    sys.exit(main(w))

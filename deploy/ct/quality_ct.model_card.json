@@ -4,6 +4,8 @@
   "modality": "CT 전용. RGB 는 별도 담당·별도 가중치 (통합 여부 미정 — 노션 §4.2 회신 대기)",
   "identity": {
     "weight_file": "quality_ct.pt",
+    "weight_path_in_repo": "deploy/ct/quality_ct.pt",
+    "weight_path_note": "가중치·모델카드·fixture 가 한 폴더에 있다. 저장소에서 받아 그대로 쓰면 된다",
     "weight_sha256": "206000f320381615a2cf4d04e7c4ce535fa920a2da26a931f33e8afe306f26c8",
     "train_run": "CT_MobileNetV3_Small.ipynb / DATASET=v1.8+v2.0 / fold0 / 12ep(best=12)",
     "source_commit": "f063f93d6022c3ba378490bcfd3b718ed0546476",
@@ -210,7 +212,9 @@
     }
   },
   "fixtures": {
-    "path": "deploy/ct/fixtures/ (S3 업로드 시 s3://kt-aivle-big-proj-kks/models/fixtures/quality_ct/)",
+    "path": "deploy/ct/fixtures/",
+    "s3_path": "s3://kt-aivle-big-proj-kks/models/fixtures/quality_ct/",
+    "s3_path_note": "아직 업로드하지 않았다. 자격증명 확보 후 올린다",
     "count": 24,
     "note": "test 셀에서만 뽑았다. FAIL 은 각 케이스의 가장 어려운 것, PASS 절반은 판정선 근처"
   },

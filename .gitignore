@@ -22,6 +22,12 @@ dist/
 *.h5
 predictions.csv
 
+# 배포 가중치만 예외로 추적한다.
+# 학습 중 나오는 체크포인트(out_*/…/best.pt)는 재학습마다 바뀌고 노트북으로 재생성되므로
+# 위 *.pt 규칙 그대로 제외하고, ai-infer 에 넘기는 확정본 한 개만 저장소에 둔다.
+# model_card 의 weight_sha256 이 이 파일을 가리키며, verify_fixtures.py 로 짝을 검증한다.
+!deploy/ct/quality_ct.pt
+
 # ── 파이썬 ────────────────────────────────────────────────────
 .venv/
 __pycache__/
